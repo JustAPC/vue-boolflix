@@ -18,8 +18,8 @@ export default {
   data() {
     return {
       apiKey: "c16fc230072b5fb47643e186e6d0d9ae",
-      multimediaList: [],
       testoRicerca: "",
+      multimediaList: [],
     };
   },
 
@@ -27,33 +27,32 @@ export default {
     metodoSearch(testo) {
       this.testoRicerca = testo;
     },
-  },
 
-  created() {
-    multimediaFiltering (){
-      if (this.testoRicerca === '') {
+    multimediaFiltering() {
+      if (this.testoRicerca === "") {
         axios
-      .get(
-        `https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&query=ritorno al futuro`
-      )
-      .then((res) => {
-        this.multimediaList = res.data.results;
-        console.log(this.multimediaList);
-      });
-      }
-
-      else {
+          .get(
+            `https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&query=ritorno al futuro`
+          )
+          .then((res) => {
+            this.multimediaList = res.data.results;
+            console.log(this.multimediaList);
+          });
+      } else {
         axios
-      .get(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${this.apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`
-      )
-      .then((res) => {
-        this.multimediaList = res.data.results;
-        console.log(this.multimediaList);
-      });
+          .get(
+            `https://api.themoviedb.org/3/discover/movie?api_key=${this.apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`
+          )
+          .then((res) => {
+            this.multimediaList = res.data.results;
+            console.log(this.multimediaList);
+          });
       }
-    }
+    },
 
+    created() {
+      this.multimediaFiltering();
+    },
   },
 };
 </script>
