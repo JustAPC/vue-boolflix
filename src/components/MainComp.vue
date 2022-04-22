@@ -26,6 +26,7 @@ export default {
       if (index == "en") {
         index = "https://flagcdn.com/w160/gb.png";
         console.log(index);
+        return index;
       }
     },
   },
