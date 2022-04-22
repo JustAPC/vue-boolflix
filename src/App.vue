@@ -37,15 +37,36 @@ export default {
   },
 
   methods: {
+    // metodoSearch(multimediaName) {
+    //   let apiQuery = multimediaName.replace(/ /g, "%20");
+    //   axios
+    //     .get(`https://api.themoviedb.org/3/search/multi?api_key=${this.apiKey}&query=${apiQuery}`)
+    //     .then((res) => {
+    //       this.multimediaList = res.data.results;
+    //       console.log(this.multimediaList);
+    //     });
+    // },
+
     metodoSearch(multimediaName) {
+      let apiQuery = multimediaName.replace(/ /g, "%20");
       axios
-        .get(
-          `https://api.themoviedb.org/3/search/multi?api_key=${this.apiKey}&query=${multimediaName}`
-        )
-        .then((res) => {
-          this.multimediaList = res.data.results;
-          console.log(this.multimediaList);
-        });
+        .all([
+          axios.get(
+            `https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&query=${apiQuery}`
+          ),
+          axios.get(
+            `https://api.themoviedb.org/3/search/tv?api_key=${this.apiKey}&query=${apiQuery}`
+          ),
+        ])
+        .then(
+          axios.spread((moviesRes, tvseriesRes) => {
+            this.multimediaList.push(...moviesRes.data.results);
+            this.multimediaList.push(...tvseriesRes.data.results);
+            console.log(tvseriesRes.data.results);
+          })
+        );
+      console.log(this.multimediaList);
+      return this.multimediaList;
     },
   },
 };
