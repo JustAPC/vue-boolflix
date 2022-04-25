@@ -1,12 +1,12 @@
 <template>
   <header class="d-flex justify-content-between align-items-center">
-    <div class="ms-3 text-danger text-uppercase fw-bold fs-2">Boolflix</div>
+    <div class="ms-3"><a href="#" class="text-danger text-uppercase fw-bold fs-2">Boolflix</a></div>
     <div>
       <form action="" class="me-5">
-        <input type="text" v-model="searchText" />
+        <input type="text" v-model="searchText" class="py-1" />
         <button
           type="submit"
-          class="btn btn-primary ms-4"
+          class="btn btn-danger ms-4"
           @click.prevent="$emit('funzioneRicerca', searchText)"
         >
           Ricerca
@@ -32,5 +32,9 @@ export default {
 header {
   background-color: black;
   height: 100px;
+}
+
+a {
+  text-decoration: none;
 }
 </style>

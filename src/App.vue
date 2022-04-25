@@ -27,13 +27,7 @@ export default {
   },
 
   created() {
-    axios
-      .get(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${this.apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`
-      )
-      .then((res) => {
-        this.multimediaList == res.data.results;
-      });
+    this.getHomeMultimedia();
   },
 
   methods: {
@@ -48,6 +42,7 @@ export default {
     // },
 
     metodoSearch(multimediaName) {
+      this.multimediaList = [];
       let apiQuery = multimediaName.replace(/ /g, "%20");
       axios
         .all([
@@ -62,11 +57,18 @@ export default {
           axios.spread((moviesRes, tvseriesRes) => {
             this.multimediaList.push(...moviesRes.data.results);
             this.multimediaList.push(...tvseriesRes.data.results);
-            console.log(tvseriesRes.data.results);
           })
         );
       console.log(this.multimediaList);
       return this.multimediaList;
+    },
+
+    getHomeMultimedia() {
+      axios
+        .get(`https://api.themoviedb.org/3/trending/movie/week?api_key=${this.apiKey}`)
+        .then((res) => {
+          this.multimediaList = res.data.results;
+        });
     },
   },
 };
@@ -84,5 +86,9 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+}
+
+body {
+  background-color: rgb(87, 87, 87);
 }
 </style>

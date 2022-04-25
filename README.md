@@ -28,16 +28,12 @@ npm run lint
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-All'interno di che ciclo vitale devo prendere l'api visto che mi serve modificato in base alla ricerca dell'utente?
+Non si vedono le immagini a ricerca vuota
 
-Capire se per fare il ciclo nelle serie tv e nei film bisogna fare due cicli for differenti o se basta fare:
+Resettare array quando effettuo una nuova ricerca
 
-```javascript
-v-for="(element,index) in array1 || array2"
-```
+All'hover di una card appare la descrizione di tutte le card
 
-Pushare nell'array generale l'api dei film e quello delle serie tv??
+Trasformazione da voto in numero a stelle
 
-Si possono fare due get in axios??
-
-Posso passare le infomrazioni di un componente figlio ad un componente padre ma usare il suo html all'interno di un altro figlio del padre??
+Vedere se con la struttura attuale della card, l'animazione della comparsa delle informazioni è fattibile
