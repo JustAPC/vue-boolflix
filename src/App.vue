@@ -61,7 +61,6 @@ export default {
             this.multimediaList.push(...tvSeriesRes.data.results);
           })
         );
-      console.log(`La lista di multimedia dopo la ricerca: ${this.multimediaList}`);
       return this.multimediaList;
     },
 
@@ -85,11 +84,11 @@ export default {
         ])
         .then(
           axios.spread((moviesGenres, tvSeriesGenres) => {
-            this.genreList.push(...moviesGenres.data.results);
-            this.genreList.push(...tvSeriesGenres.data.results);
+            this.genreList.push(...moviesGenres.data.genres);
+            this.genreList.push(...tvSeriesGenres.data.genres);
           })
         );
-      console.log(`La lista dei generi è ${this.genreList}`);
+      console.log(this.genreList);
       return this.genreList;
     },
 

@@ -11,7 +11,7 @@
           @click.prevent="$emit('performFilteringByGenre', selectedGenre)"
         >
           <option value="All">All</option>
-          <option v-for="(elm, i) in genreList" :key="i" v-bind:value="elm.id">
+          <option v-for="(elm, i) in genreList" :key="i" :value="elm.id">
             {{ elm.name }}
           </option>
         </select>
@@ -42,6 +42,7 @@ export default {
   data() {
     return {
       searchText: "",
+      selectedGenre: "",
     };
   },
 };
