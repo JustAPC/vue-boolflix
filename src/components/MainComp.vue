@@ -23,14 +23,31 @@
 
         <!-- Descrizione multimedia -->
         <div class="multimedia-info text-white p-3" v-show="hover">
+          <!-- Titolo -->
           <div><span>Titolo: </span>{{ elm.title }}</div>
           <div v-if="elm.title != elm.original_title">
             <span>Titolo Originale: </span> {{ elm.original_title }}
           </div>
+          <!-- Lingua -->
           <div>
             <span>Original Language: </span>
             <img :src="flagFunction(elm.original_language)" />
           </div>
+          <!-- Voto -->
+          <div v-if="getNewRating(elm.vote_average) != 0">
+            <span>Voto: </span>
+            <span v-for="(elm, i) in getNewRating(elm.vote_average)" :key="i">
+              <i class="fa-solid fa-star active-stars"></i>
+            </span>
+
+            <span v-for="(elm, i) in 5 - getNewRating(elm.vote_average)" :key="i">
+              <i class="fa-solid fa-star empty-stars"></i>
+            </span>
+          </div>
+
+          <div v-else><span>Not voted yet!</span></div>
+
+          <!-- Overview -->
           <div><span>Overview: </span>{{ elm.overview }}</div>
         </div>
       </div>
@@ -54,22 +71,22 @@ export default {
   methods: {
     flagFunction(index) {
       if (index == "en") {
-        index = "https://flagcdn.com/w40/gb.png";
+        index = "https://flagcdn.com/w20/gb.png";
         return index;
       } else if (index == "it") {
-        index = "https://flagcdn.com/w40/it.png";
+        index = "https://flagcdn.com/w20/it.png";
         return index;
       } else if (index == "de") {
-        index = "https://flagcdn.com/w40/de.png";
+        index = "https://flagcdn.com/w20/de.png";
         return index;
       } else if (index == "fr") {
-        index = "https://flagcdn.com/w40/fr.png";
+        index = "https://flagcdn.com/w20/fr.png";
         return index;
       } else if (index == "es") {
-        index = "https://flagcdn.com/w40/es.png";
+        index = "https://flagcdn.com/w20/es.png";
         return index;
       } else {
-        index = "https://flagcdn.com/w40/aq.png";
+        index = "https://flagcdn.com/w20/aq.png";
         return index;
       }
     },
@@ -118,6 +135,14 @@ ul li {
 
 .multimedia-info::-webkit-scrollbar {
   display: none;
+}
+
+.empty-stars {
+  color: grey;
+}
+
+.active-stars {
+  color: yellow;
 }
 
 .multimedia-info div {
