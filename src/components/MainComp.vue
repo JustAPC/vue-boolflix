@@ -1,10 +1,10 @@
 <template>
-  <div class="d-flex p-5 flex-wrap justify-content-start">
+  <div class="d-flex p-3 flex-wrap justify-content-start">
     <div v-for="(elm, i) in multimediaList" :key="i">
       <!-- Container multimedia -->
       <div
         class="multimedia-card m-3 mb-5 position-relative"
-        @mouseover="hover = true"
+        @mouseover="mouseOver(i)"
         @mouseleave="hover = false"
       >
         <!-- Immagine di copertina -->
@@ -22,7 +22,7 @@
         />
 
         <!-- Descrizione multimedia -->
-        <div class="multimedia-info text-white p-3" v-show="hover">
+        <div class="multimedia-info text-white p-3" v-show="hover && i === mouseOverIndex">
           <!-- Titolo -->
           <div><span>Titolo: </span>{{ elm.title }}</div>
           <div v-if="elm.title != elm.original_title">
@@ -35,14 +35,18 @@
           </div>
           <!-- Voto -->
           <div v-if="getNewRating(elm.vote_average) != 0">
-            <span>Voto: </span>
-            <span v-for="(elm, i) in getNewRating(elm.vote_average)" :key="i">
-              <i class="fa-solid fa-star active-stars"></i>
-            </span>
+            <div class="d-inline-block">
+              <span>Voto: </span>
+              <span v-for="(elm, i) in getNewRating(elm.vote_average)" :key="i">
+                <i class="fa-solid fa-star active-stars"></i>
+              </span>
+            </div>
 
-            <span v-for="(elm, i) in 5 - getNewRating(elm.vote_average)" :key="i">
-              <i class="fa-solid fa-star empty-stars"></i>
-            </span>
+            <div class="d-inline-block">
+              <span v-for="(elm, i) in 5 - getNewRating(elm.vote_average)" :key="i">
+                <i class="fa-solid fa-star empty-stars"></i>
+              </span>
+            </div>
           </div>
 
           <div v-else><span>Not voted yet!</span></div>
@@ -65,6 +69,7 @@ export default {
   data() {
     return {
       hover: false,
+      mouseOverIndex: null,
     };
   },
 
@@ -95,6 +100,11 @@ export default {
       index = Math.round(index / 2);
       return index;
     },
+
+    mouseOver(index) {
+      this.hover = true;
+      this.mouseOverIndex = index;
+    },
   },
 };
 </script>
@@ -114,6 +124,7 @@ ul li {
   height: 510px;
   width: 342px;
   cursor: pointer;
+  perspective: 1000px;
 }
 
 .multimedia-poster {

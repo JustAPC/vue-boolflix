@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <HeaderComp @funzioneRicerca="metodoSearch" />
+    <HeaderComp @funzioneRicerca="metodoSearch" @performFilteringByGenre="genreFiltering" />
     <MainComp :multimediaList="multimediaList" />
   </div>
 </template>
@@ -22,12 +22,14 @@ export default {
     return {
       apiKey: "c16fc230072b5fb47643e186e6d0d9ae",
       multimediaList: [],
+      genreList: [],
       testoRicerca: "",
     };
   },
 
   created() {
     this.getHomeMultimedia();
+    this.getGenreList();
   },
 
   methods: {
@@ -41,9 +43,9 @@ export default {
     //     });
     // },
 
-    metodoSearch(multimediaName) {
+    metodoSearch(testoRicerca) {
       this.multimediaList = [];
-      let apiQuery = multimediaName.replace(/ /g, "%20");
+      let apiQuery = testoRicerca.replace(/ /g, "%20");
       axios
         .all([
           axios.get(
@@ -54,12 +56,12 @@ export default {
           ),
         ])
         .then(
-          axios.spread((moviesRes, tvseriesRes) => {
+          axios.spread((moviesRes, tvSeriesRes) => {
             this.multimediaList.push(...moviesRes.data.results);
-            this.multimediaList.push(...tvseriesRes.data.results);
+            this.multimediaList.push(...tvSeriesRes.data.results);
           })
         );
-      console.log(this.multimediaList);
+      console.log(`La lista di multimedia dopo la ricerca: ${this.multimediaList}`);
       return this.multimediaList;
     },
 
@@ -69,6 +71,30 @@ export default {
         .then((res) => {
           this.multimediaList = res.data.results;
         });
+    },
+
+    getGenreList() {
+      axios
+        .all([
+          axios.get(
+            `https://api.themoviedb.org/3/genre/movie/list?api_key=${this.apiKey}&language=en-US`
+          ),
+          axios.get(
+            `https://api.themoviedb.org/3/genre/tv/list?api_key=${this.apiKey}&language=en-US`
+          ),
+        ])
+        .then(
+          axios.spread((moviesGenres, tvSeriesGenres) => {
+            this.genreList.push(...moviesGenres.data.results);
+            this.genreList.push(...tvSeriesGenres.data.results);
+          })
+        );
+      console.log(`La lista dei generi è ${this.genreList}`);
+      return this.genreList;
+    },
+
+    genreFiltering() {
+      console.log(this.genreList);
     },
   },
 };
