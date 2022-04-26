@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <HeaderComp @funzioneRicerca="metodoSearch" @performFilteringByGenre="genreFiltering" />
+    <HeaderComp
+      :genreList="genreList"
+      @funzioneRicerca="metodoSearch"
+      @performFilteringByGenre="genreFiltering"
+    />
     <MainComp :multimediaList="multimediaList" />
   </div>
 </template>
@@ -85,7 +89,9 @@ export default {
         .then(
           axios.spread((moviesGenres, tvSeriesGenres) => {
             this.genreList.push(...moviesGenres.data.genres);
-            this.genreList.push(...tvSeriesGenres.data.genres);
+            if (tvSeriesGenres.data.genres.name != this.genreList.name) {
+              this.genreList.push(...tvSeriesGenres.data.genres);
+            }
           })
         );
       console.log(this.genreList);
@@ -93,7 +99,7 @@ export default {
     },
 
     genreFiltering() {
-      console.log(this.genreList);
+      console.log(this.multimediaList);
     },
   },
 };

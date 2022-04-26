@@ -7,53 +7,62 @@
         @mouseover="mouseOver(i)"
         @mouseleave="hover = false"
       >
-        <!-- Immagine di copertina -->
-        <img
-          class="multimedia-poster"
-          :src="`https://image.tmdb.org/t/p/w342/${elm.poster_path}`"
-          :alt="`immagine di copertina di ${elm.title}`"
-          v-if="elm.poster_path != null"
-        />
-        <img
-          src="../assets/unknown.png"
-          class="multimedia-poster"
-          alt="immagine di copertina indefinita"
-          v-else
-        />
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <!-- Immagine di copertina -->
+              <img
+                class="multimedia-poster"
+                :src="`https://image.tmdb.org/t/p/w342/${elm.poster_path}`"
+                :alt="`immagine di copertina di ${elm.title}`"
+                v-if="elm.poster_path != null"
+              />
+              <img
+                src="../assets/unknown.png"
+                class="multimedia-poster"
+                alt="immagine di copertina indefinita"
+                v-else
+              />
+            </div>
+
+            <div class="flip-card-back">
+              <div class="multimedia-info text-white p-3" v-show="hover && i === mouseOverIndex">
+                <!-- Titolo -->
+                <div><span>Titolo: </span>{{ elm.title }}</div>
+                <div v-if="elm.title != elm.original_title">
+                  <span>Titolo Originale: </span> {{ elm.original_title }}
+                </div>
+                <!-- Lingua -->
+                <div>
+                  <span>Original Language: </span>
+                  <img :src="flagFunction(elm.original_language)" />
+                </div>
+                <!-- Voto -->
+                <div v-if="getNewRating(elm.vote_average) != 0">
+                  <div class="d-inline-block">
+                    <span>Voto: </span>
+                    <span v-for="(elm, i) in getNewRating(elm.vote_average)" :key="i">
+                      <i class="fa-solid fa-star active-stars"></i>
+                    </span>
+                  </div>
+
+                  <div class="d-inline-block">
+                    <span v-for="(elm, i) in 5 - getNewRating(elm.vote_average)" :key="i">
+                      <i class="fa-solid fa-star empty-stars"></i>
+                    </span>
+                  </div>
+                </div>
+
+                <div v-else><span>Not voted yet!</span></div>
+
+                <!-- Overview -->
+                <div><span>Overview: </span>{{ elm.overview }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- Descrizione multimedia -->
-        <div class="multimedia-info text-white p-3" v-show="hover && i === mouseOverIndex">
-          <!-- Titolo -->
-          <div><span>Titolo: </span>{{ elm.title }}</div>
-          <div v-if="elm.title != elm.original_title">
-            <span>Titolo Originale: </span> {{ elm.original_title }}
-          </div>
-          <!-- Lingua -->
-          <div>
-            <span>Original Language: </span>
-            <img :src="flagFunction(elm.original_language)" />
-          </div>
-          <!-- Voto -->
-          <div v-if="getNewRating(elm.vote_average) != 0">
-            <div class="d-inline-block">
-              <span>Voto: </span>
-              <span v-for="(elm, i) in getNewRating(elm.vote_average)" :key="i">
-                <i class="fa-solid fa-star active-stars"></i>
-              </span>
-            </div>
-
-            <div class="d-inline-block">
-              <span v-for="(elm, i) in 5 - getNewRating(elm.vote_average)" :key="i">
-                <i class="fa-solid fa-star empty-stars"></i>
-              </span>
-            </div>
-          </div>
-
-          <div v-else><span>Not voted yet!</span></div>
-
-          <!-- Overview -->
-          <div><span>Overview: </span>{{ elm.overview }}</div>
-        </div>
       </div>
     </div>
   </div>
@@ -64,6 +73,7 @@ export default {
   name: "MainComp",
   props: {
     multimediaList: Array,
+    genreList: Array,
   },
 
   data() {
@@ -162,5 +172,43 @@ ul li {
 
 span {
   font-weight: bold;
+}
+
+.flip-card {
+  background-color: transparent;
+  height: 100%;
+  width: 100%;
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+  background-color: transparent;
+}
+
+.flip-card-back {
+  background-color: transparent;
+  transform: rotateY(180deg);
 }
 </style>
