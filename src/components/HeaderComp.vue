@@ -3,7 +3,7 @@
     <div class="ms-3"><a href="#" class="text-danger text-uppercase fw-bold fs-2">Boolflix</a></div>
     <div>
       <form action="" class="me-5">
-        <input type="text" v-model="searchText" class="py-1" />
+        <input type="text" v-model="searchText" class="fs-5" />
         <button
           type="submit"
           class="btn btn-danger ms-4"
